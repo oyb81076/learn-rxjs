@@ -1,0 +1,10 @@
+import { Subject } from "rxjs/internal/Subject";
+const subject = new Subject<string>();
+subject.subscribe(console.log, null, () => console.log("complete"));
+subject.next("a");
+subject.subscribe(console.log, null, () => console.log("complete"));
+subject.next("b");
+subject.next("c");
+subject.complete();
+subject.next("d");
+subject.subscribe(console.log, null, () => console.log("complete"));
