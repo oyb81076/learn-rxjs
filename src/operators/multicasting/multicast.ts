@@ -1,13 +1,11 @@
-import { ConnectableObservable } from "rxjs/internal/observable/ConnectableObservable";
-import { interval } from "rxjs/internal/observable/interval";
-import { multicast } from "rxjs/internal/operators/multicast";
-import { take } from "rxjs/internal/operators/take";
-import { Subject } from "rxjs/internal/Subject";
+import { ConnectableObservable, interval, Subject } from "rxjs";
+import { multicast, take } from "rxjs/operators";
 const muti = interval(100)
-  .pipe(take(3))
   .pipe(multicast(new Subject())) as ConnectableObservable<number>;
-muti.subscribe(console.log);
-muti.subscribe(console.log);
+const muti$$ = muti.connect();
+muti.pipe(take(3)).subscribe(console.log);
 setTimeout(() => {
-  muti.connect();
+  muti.pipe(take(3)).subscribe(console.log, null, () => {
+    muti$$.unsubscribe();
+  });
 }, 1000);

@@ -1,5 +1,6 @@
 import { empty, of } from "rxjs";
 import { single } from "rxjs/operators";
+// 如果队列个数不是1就出错
 
 empty()
   .pipe(single())
