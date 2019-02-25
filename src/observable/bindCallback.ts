@@ -1,10 +1,17 @@
-// 不要用, 不知道这个干什么用的
-import { bindCallback } from "rxjs/internal/observable/bindCallback";
-import { startWith } from "rxjs/internal/operators/startWith";
-const callback = (arg: string) => {
-  console.log("run callback :" + arg);
-};
-const ob = bindCallback(callback);
-const source = ob("arg1");
-source.pipe(startWith("arg0")).subscribe(console.log);
-source.pipe(startWith("arg0")).subscribe(console.log);
+import { exists } from "fs";
+import { bindCallback } from "rxjs";
+
+const findName = bindCallback((id: number, cb: (name: string) => void) => {
+  console.log("start to find name");
+  process.nextTick(() => {
+    cb("nameid:" + id);
+  });
+});
+
+findName(2).subscribe(console.log);
+
+const observableExists = bindCallback(exists);
+
+observableExists(__filename).subscribe((v) => {
+  console.log("file %s is exists? %s", __filename, v);
+});
